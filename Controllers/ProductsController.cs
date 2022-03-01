@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using log4net;
+using System.Threading.Tasks;
 using System.Web.Http;
 using WebApi.Attributes;
 using WebApi.Models;
@@ -9,6 +10,8 @@ namespace WebApi.Controllers
     [RoutePrefix("products")]
     public class ProductsController : ApiController
     {
+        private ILog Logger = ApplicationLogger.Logger;
+
         private IProductService ProductService { get; set; }
 
         public ProductsController(IProductService productService)
@@ -19,6 +22,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetProductsAsync()
         {
+            Logger.Debug("GetProducts");
             var products = await this.ProductService.GetProductsAsync().ConfigureAwait(false);
             return Ok(products);
         }
